@@ -61,9 +61,6 @@
                 else {
                     this.value.push(key);
                 }
-                this.$nextTick(() => {
-                    console.log(this.value);
-                })
             }
         },
     }
