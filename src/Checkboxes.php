@@ -36,10 +36,17 @@ class Checkboxes extends Field
         ]);
     }
 
-    public function displayUncheckedValues()
+    public function displayUncheckedValuesOnIndex()
     {
         return $this->withMeta([
-            'display_unchecked' => true
+            'display_unchecked_on_index' => true
+        ]);
+    }
+
+    public function displayUncheckedValuesOnDetail()
+    {
+        return $this->withMeta([
+            'display_unchecked_on_detail' => true
         ]);
     }
 
@@ -90,25 +97,22 @@ class Checkboxes extends Field
 
     private function attributeExists(NovaRequest $request, $requestAttribute)
     {
-        return (
-            $request->exists($requestAttribute)
-            && ! is_null($request[$requestAttribute])
-        );
+        return ($request->exists($requestAttribute) && $request[$requestAttribute]);
     }
 
     private function shouldSaveAsString()
     {
        return (
-           array_key_exists('saved_as_string', $this->meta)
-           && $this->meta['saved_as_string']
+           array_key_exists('save_as_string', $this->meta)
+           && $this->meta['save_as_string']
        );
     }
 
     private function shouldSaveUnchecked()
     {
         return (
-            array_key_exists('saved_unchecked', $this->meta)
-            && $this->meta['saved_unchecked']
+            array_key_exists('save_unchecked', $this->meta)
+            && $this->meta['save_unchecked']
         );
     }
 
