@@ -13,6 +13,7 @@
                     <label
                         :for="field.name"
                         v-text="option.label"
+                        @click="handleChange(option.value)"
                     ></label>
                 </li>
             </ul>
