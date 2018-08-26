@@ -38,7 +38,8 @@
 
         computed:{
             optionValues(){
-                return this.field.options.map(o => o.value)
+                return this.field.options
+                    .map(o => o.value)
                     .reduce((o, key) => ({ ...o, [key]: this.value.includes(key)}), {})
             }
         },

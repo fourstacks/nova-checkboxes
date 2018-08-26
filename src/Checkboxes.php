@@ -24,7 +24,7 @@ class Checkboxes extends Field
     public function saveAsString()
     {
         return $this->withMeta([
-            'saved_as_string' => true
+            'save_as_string' => true
         ]);
     }
 
@@ -32,7 +32,14 @@ class Checkboxes extends Field
     public function saveUncheckedValues()
     {
         return $this->withMeta([
-            'saved_unchecked' => true
+            'save_unchecked' => true
+        ]);
+    }
+
+    public function displayUncheckedValues()
+    {
+        return $this->withMeta([
+            'display_unchecked' => true
         ]);
     }
 
