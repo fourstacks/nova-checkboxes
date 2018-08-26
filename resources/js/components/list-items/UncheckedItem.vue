@@ -1,6 +1,6 @@
 <template>
-    <li class="flex items-center py-1">
-        <span class="text-danger block mr-4">
+    <li class="flex items-center mb-2">
+        <span class="text-danger inline-block mr-4">
             <svg
                 class="block fill-current h-4 w-4"
                 version="1.1"
