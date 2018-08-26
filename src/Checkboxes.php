@@ -7,19 +7,10 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Checkboxes extends Field
 {
-    /**
-     * The field's component.
-     *
-     * @var string
-     */
+
     public $component = 'nova-checkboxes';
 
-    /**
-     * Set the options for the checkbox list.
-     *
-     * @param  array  $options
-     * @return $this
-     */
+
     public function options($options)
     {
         return $this->withMeta([
@@ -29,38 +20,108 @@ class Checkboxes extends Field
         ]);
     }
 
-    /**
-     * Hydrate the given attribute on the model based on the incoming request.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  string  $requestAttribute
-     * @param  object  $model
-     * @param  string  $attribute
-     * @return void
-     */
+
+    public function saveAsString()
+    {
+        return $this->withMeta([
+            'saved_as_string' => true
+        ]);
+    }
+
+
+    public function saveUncheckedValues()
+    {
+        return $this->withMeta([
+            'saved_unchecked' => true
+        ]);
+    }
+
+    public function resolveAttribute($resource, $attribute = null)
+    {
+        $value = data_get($resource, $attribute);
+
+        if(! $value) return $value;
+
+        if(is_array($value)){
+            if($this->arrayIsAssoc($value)){
+                return collect($value)
+                    ->filter(function($option){
+                        return $option;
+                    })
+                    ->map(function($option, $key){
+                        return $key;
+                    })
+                    ->values()
+                    ->all();
+            }
+            return $value;
+        }
+
+        return explode(',', $value);
+    }
+
     protected function fillAttributeFromRequest(NovaRequest $request,
                                                 $requestAttribute,
                                                 $model,
                                                 $attribute)
     {
-        if ($request->exists($requestAttribute) && ! is_null($request[$requestAttribute])) {
+        if ($this->attributeExists($request, $requestAttribute)) {
 
-            $checkedOptions = explode(',', $request[$requestAttribute]);
-
-            $model->{$attribute} = $checkedOptions;
+            if($this->shouldSaveAsString()){
+                $value = $request[$requestAttribute];
+            }
+            elseif($this->shouldSaveUnchecked()){
+                $value = $this->withUnchecked($request[$requestAttribute]);
+            }
+            else {
+                $value = explode(',', $request[$requestAttribute]);
+            }
+            $model->{$attribute} = $value;
         }
     }
 
 
-    /**
-     * Resolve the given attribute from the given resource.
-     *
-     * @param  mixed  $resource
-     * @param  string  $attribute
-     * @return mixed
-     */
-    public function resolveAttribute($resource, $attribute = null)
+    private function attributeExists(NovaRequest $request, $requestAttribute)
     {
-        return data_get($resource, $attribute);
+        return (
+            $request->exists($requestAttribute)
+            && ! is_null($request[$requestAttribute])
+        );
+    }
+
+    private function shouldSaveAsString()
+    {
+       return (
+           array_key_exists('saved_as_string', $this->meta)
+           && $this->meta['saved_as_string']
+       );
+    }
+
+    private function shouldSaveUnchecked()
+    {
+        return (
+            array_key_exists('saved_unchecked', $this->meta)
+            && $this->meta['saved_unchecked']
+        );
+    }
+
+    private function withUnchecked($checkedOptions)
+    {
+        $checkedOptionsArray = explode(',', $checkedOptions);
+
+        return collect($this->meta['options'])
+            ->mapWithKeys(function($option) use ($checkedOptionsArray){
+                $isChecked = in_array($option['value'], $checkedOptionsArray);
+
+                return [ $option['value'] => $isChecked ];
+            })
+            ->all();
+    }
+
+    private function arrayIsAssoc(array $array)
+    {
+        if ([] === $array) return false;
+
+        return array_keys($array) !== range(0, count($array) - 1);
     }
 }
