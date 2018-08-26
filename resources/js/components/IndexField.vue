@@ -1,7 +1,8 @@
 <template>
-    <ul class="list-reset py-2">
+    <ul class="list-reset pt-2">
         <component
             v-for="option in optionList"
+            :key="option.key"
             :is="getItemType(option)"
             :option="option"
         ></component>
@@ -9,56 +10,21 @@
 </template>
 
 <script>
-    import CheckedItem from './list-items/CheckedItem.vue';
-    import UncheckedItem from './list-items/UncheckedItem.vue';
+    import CheckboxDisplay from '../mixins/CheckboxDisplay'
 
     export default {
 
-        components:{
-            CheckedItem,
-            UncheckedItem
-        },
+        mixins: [ CheckboxDisplay ],
 
         props: ['resourceName', 'field'],
 
-        data: () => ({
-            value: [],
-        }),
-
         computed: {
             optionList() {
-                if (this.field.display_unchecked) {
-                    return this.field.options
-                        .map(option => {
-                            return {
-                                'status': this.value.includes(option.value),
-                                'key': option.value,
-                                'label': option.label
-                            }
-                        })
-                        .sort((x, y) => y.status - x.status);
+                if (this.field.display_unchecked_on_index) {
+                    return this.getAllOptions();
                 }
-                return this.value
-                    .map(optionValue => {
-                        return {
-                            'status': this.value.includes(optionValue),
-                            'key': optionValue,
-                            'label': this.field.options.find(o => o.value === optionValue)
-                        }
-                    });
+                return this.getCheckedOptions();
             }
-        },
-
-        methods: {
-            getItemType(option) {
-                return (option.status)
-                    ? 'checked-item'
-                    : 'unchecked-item'
-            }
-        },
-
-        mounted() {
-            this.value = this.field.value || [];
         }
     }
 </script>
