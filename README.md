@@ -10,6 +10,9 @@ Next, you can install this package in to a Laravel app that uses [Nova](https://
 ```bash
 composer require fourstacks/nova-checkboxes
 ```
+## Examples
+
+Coming soon
 
 ## Usage
 
@@ -123,7 +126,7 @@ Note that in order to use this option you cannot also use the `saveAsString` opt
 
 #### displayUncheckedValuesOnIndex
 
-By default, only the checked fields will display on the index.  If you wish to display all the options for this field along with their checked/unchecked status you can add this option:
+By default, only the checked options will display on the index.  If you wish to display all the options for this field along with their checked/unchecked status you can add this option:
 
 ```php
 Checkboxes::make('Hobbies')
@@ -138,7 +141,7 @@ Note that this does NOT require you to save all unchecked values also using `sav
 
 #### displayUncheckedValuesOnDetail
 
-By default, only the checked fields will display on detail screens.  If you wish to display all the options for this field along with their checked/unchecked status you can add this option:
+By default, only the checked options will display on detail screens.  If you wish to display all the options for this field along with their checked/unchecked status you can add this option:
 
 ```php
 Checkboxes::make('Hobbies')
