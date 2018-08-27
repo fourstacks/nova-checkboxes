@@ -12,7 +12,15 @@ composer require fourstacks/nova-checkboxes
 ```
 ## Examples
 
-Coming soon
+![Nova checkboxes on Nova index view (with displayUncheckedValuesOnIndex option)](https://raw.githubusercontent.com/fourstacks/nova-checkboxes/master/screenshot-index.png)
+Nova checkboxes on Nova index view (with `displayUncheckedValuesOnIndex` option)
+
+![Nova checkboxes on Nova detail view](https://raw.githubusercontent.com/fourstacks/nova-checkboxes/master/screenshot-detail.png)
+Nova checkboxes on Nova detail view
+
+![Nova checkboxes on Nova form view](https://raw.githubusercontent.com/fourstacks/nova-checkboxes/master/screenshot-form.png)
+Nova checkboxes on Nova form
+    
 
 ## Usage
 
