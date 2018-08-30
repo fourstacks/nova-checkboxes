@@ -74,12 +74,11 @@ class Checkboxes extends Field
         return explode(',', $value);
     }
 
-    protected function fillAttributeFromRequest(NovaRequest $request,
-                                                $requestAttribute,
-                                                $model,
-                                                $attribute)
+    protected function fillAttributeFromRequest(
+        NovaRequest $request, $requestAttribute, $model, $attribute
+    )
     {
-        if ($this->attributeExists($request, $requestAttribute)) {
+        if ($request->exists($requestAttribute)) {
 
             if($this->shouldSaveAsString()){
                 $value = $request[$requestAttribute];
@@ -88,24 +87,20 @@ class Checkboxes extends Field
                 $value = $this->withUnchecked($request[$requestAttribute]);
             }
             else {
-                $value = explode(',', $request[$requestAttribute]);
+                $value = ($request[$requestAttribute])
+                    ? explode(',', $request[$requestAttribute])
+                    : [];
             }
             $model->{$attribute} = $value;
         }
     }
 
-
-    private function attributeExists(NovaRequest $request, $requestAttribute)
-    {
-        return ($request->exists($requestAttribute) && $request[$requestAttribute]);
-    }
-
     private function shouldSaveAsString()
     {
-       return (
-           array_key_exists('save_as_string', $this->meta)
-           && $this->meta['save_as_string']
-       );
+        return (
+            array_key_exists('save_as_string', $this->meta)
+            && $this->meta['save_as_string']
+        );
     }
 
     private function shouldSaveUnchecked()
