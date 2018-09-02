@@ -5,7 +5,7 @@ This package contains a Laravel Nova field to add an array of checkboxes to your
 
 ## Installation
 
-Next, you can install this package in to a Laravel app that uses [Nova](https://nova.laravel.com) via composer:
+You can install this package in to a Laravel app that uses [Nova](https://nova.laravel.com) via composer:
 
 ```bash
 composer require fourstacks/nova-checkboxes
@@ -24,10 +24,12 @@ Nova checkboxes on Nova form
 
 ## Usage
 
-To add a checkbox field, use the `use Fourstacks\NovaCheckboxes\Checkboxes` field in your Nova resource:
+To add a checkbox field, use the `Fourstacks\NovaCheckboxes\Checkboxes` field in your Nova resource:
 
 ```php
 namespace App\Nova;
+
+use Fourstacks\NovaCheckboxes\Checkboxes;
 
 // ...
 
