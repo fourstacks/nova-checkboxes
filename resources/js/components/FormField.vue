@@ -8,7 +8,7 @@
                         @input="handleChange(option.value)"
                         :id="field.name"
                         :name="field.name"
-                        :checked="optionValues[option.value]"
+                        :checked="options[option.value]"
                     ></checkbox>
                     <label
                         :for="field.name"
@@ -32,7 +32,8 @@
         mixins: [FormField, HandlesValidationErrors],
 
         data: () => ({
-            value: [],
+            value: '',
+            options: []
         }),
 
         props: ['resourceName', 'resourceId', 'field'],
@@ -48,22 +49,30 @@
         methods: {
 
             setInitialValue() {
-                this.value = this.field.value || []
+                this.value = this.field.value || '';
+                this.$nextTick(() => {
+                    this.options = (this.value)
+                        ? JSON.parse(this.value)
+                        : [];
+                });
             },
 
             fill(formData) {
-                formData.append(this.field.attribute, this.value || [])
+                formData.append(this.field.attribute, this.value || '')
             },
 
             handleChange(key) {
-                if(this.value.includes(key)){
-                    let index = this.value.indexOf(key);
-                    this.value.splice(index, 1);
-                }
-                else {
-                    this.value.push(key);
-                }
+                this.options[key] = ! this.options[key];
             }
         },
+
+        watch: {
+            'options' : {
+                handler: function (newOptions) {
+                    this.value = JSON.stringify(newOptions);
+                },
+                deep: true
+            }
+        }
     }
 </script>
