@@ -58,20 +58,12 @@ class Checkboxes extends Field
 
         if(is_array($value)){
             if($this->arrayIsAssoc($value)){
-                return collect($value)
-                    ->filter(function($option){
-                        return $option;
-                    })
-                    ->map(function($option, $key){
-                        return $key;
-                    })
-                    ->values()
-                    ->all();
+                return $value;
             }
-            return $value;
+            return $this->withUnchecked($value);
         }
 
-        return explode(',', $value);
+        return $this->withUnchecked(explode(',', $value));
     }
 
     protected function fillAttributeFromRequest(
@@ -113,11 +105,9 @@ class Checkboxes extends Field
 
     private function withUnchecked($checkedOptions)
     {
-        $checkedOptionsArray = explode(',', $checkedOptions);
-
         return collect($this->meta['options'])
-            ->mapWithKeys(function($option) use ($checkedOptionsArray){
-                $isChecked = in_array($option['value'], $checkedOptionsArray);
+            ->mapWithKeys(function($option) use ($checkedOptions){
+                $isChecked = in_array($option['value'], $checkedOptions);
 
                 return [ $option['value'] => $isChecked ];
             })
