@@ -54,16 +54,16 @@ class Checkboxes extends Field
     {
         $value = data_get($resource, $attribute);
 
-        if(! $value) return $value;
+        if(! $value) return json_encode($this->withUnchecked([]));
 
         if(is_array($value)){
             if($this->arrayIsAssoc($value)){
-                return $value;
+                return json_encode($value);
             }
-            return $this->withUnchecked($value);
+            return json_encode($this->withUnchecked($value));
         }
 
-        return $this->withUnchecked(explode(',', $value));
+        return json_encode($this->withUnchecked(explode(',', $value)));
     }
 
     protected function fillAttributeFromRequest(
@@ -72,17 +72,18 @@ class Checkboxes extends Field
     {
         if ($request->exists($requestAttribute)) {
 
+            $data = json_decode($request[$requestAttribute]);
+
             if($this->shouldSaveAsString()){
-                $value = $request[$requestAttribute];
+                $value = implode(',', $this->onlyChecked($data));
             }
             elseif($this->shouldSaveUnchecked()){
-                $value = $this->withUnchecked($request[$requestAttribute]);
+                $value = $data;
             }
             else {
-                $value = ($request[$requestAttribute])
-                    ? explode(',', $request[$requestAttribute])
-                    : [];
+                $value = $this->onlyChecked($data);
             }
+
             $model->{$attribute} = $value;
         }
     }
@@ -103,14 +104,27 @@ class Checkboxes extends Field
         );
     }
 
-    private function withUnchecked($checkedOptions)
+    private function withUnchecked($data)
     {
         return collect($this->meta['options'])
-            ->mapWithKeys(function($option) use ($checkedOptions){
-                $isChecked = in_array($option['value'], $checkedOptions);
+            ->mapWithKeys(function($option) use ($data){
+                $isChecked = in_array($option['value'], $data);
 
                 return [ $option['value'] => $isChecked ];
             })
+            ->all();
+    }
+
+    private function onlyChecked($data)
+    {
+        return collect($data)
+            ->filter(function($isChecked){
+                return $isChecked;
+            })
+            ->map(function($value, $key){
+                return $key;
+            })
+            ->values()
             ->all();
     }
 
