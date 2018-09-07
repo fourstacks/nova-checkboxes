@@ -22,7 +22,7 @@ export default {
             return this.field.options
                 .map(option => {
                     return {
-                        'status': this.value.includes(option.value),
+                        'status': this.value[option.value],
                         'key': option.value,
                         'label': option.label
                     }
@@ -30,19 +30,22 @@ export default {
                 .sort((x, y) => y.status - x.status);
         },
         getCheckedOptions(){
-            return this.value
-                .map(optionValue => {
+            return this.field.options
+                .filter(option => {
+                    return this.value[option.value];
+                })
+                .map(option => {
                     return {
                         'status': true,
-                        'key': optionValue,
-                        'label': this.field.options.find(o => o.value === optionValue)['label']
+                        'key': option.value,
+                        'label': option.label
                     }
                 });
         }
     },
 
     mounted() {
-        this.value = this.field.value || [];
+        this.value = JSON.parse(this.field.value) || {};
     }
 
 }
