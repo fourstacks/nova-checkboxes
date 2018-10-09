@@ -1,6 +1,6 @@
 # A checkbox field for Nova apps
 
-This package contains a Laravel Nova field to add an array of checkboxes to your Nova resource forms and display the input from these fields. 
+This package contains a Laravel Nova field to add an array of checkboxes to your Nova resource forms and display the input from these fields.
 
 
 ## Installation
@@ -20,7 +20,7 @@ Nova checkboxes on Nova detail view
 
 ![Nova checkboxes on Nova form view](https://raw.githubusercontent.com/fourstacks/nova-checkboxes/master/screenshot-form.png)
 Nova checkboxes on Nova form
-    
+
 
 ## Usage
 
@@ -36,12 +36,12 @@ use Fourstacks\NovaCheckboxes\Checkboxes;
 class Member extends Resource
 {
     // ...
-    
+
     public function fields(Request $request)
     {
         return [
             // ...
-            
+
             Checkboxes::make('Hobbies'),
 
             // ...
@@ -83,7 +83,7 @@ Checkboxes::make('Hobbies')
         'rock_climbing' => 'Rock Climbing',
         'archery' => 'Archery'
     ])
-         
+
 ```
 
 #### saveAsString
@@ -109,7 +109,7 @@ Checkboxes::make('Hobbies')
         'archery' => 'Archery'
     ])
     ->saveAsString()
-         
+
 ```
 
 #### saveUncheckedValues
@@ -125,7 +125,7 @@ Checkboxes::make('Hobbies')
         'archery' => 'Archery'
     ])
     ->saveUncheckedValues()
-         
+
 ```
 
 This will save results to your database as an object:
@@ -163,6 +163,21 @@ Checkboxes::make('Hobbies')
     ->displayUncheckedValuesOnDetail()
 ```
 Note that this does NOT require you to save all unchecked values also using `saveUncheckedValues`.  You can use any of the approaches to saving data along with this option.
+
+#### Display checkbox in columns
+
+By default, only checked values are displayed in one column, but if you have enough space you can split them in many using the `columns` method on the field.
+
+```php
+Checkboxes::make('Hobbies')
+    ->options([
+        'sailing' => 'Sailing',
+        'rock_climbing' => 'Rock Climbing',
+        'archery' => 'Archery'
+    ])
+    ->columns(3)
+```
+This will render at most 3 columns with values. So if you have 8 values selected you will see 3 columns with 3, 3 and 2 values.
 
 ### Changelog
 
