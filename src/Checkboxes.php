@@ -52,7 +52,7 @@ class Checkboxes extends Field
 
     public function resolveAttribute($resource, $attribute = null)
     {
-        $value = data_get($resource, $attribute);
+        $value = data_get($resource, str_replace('->', '.', $attribute));
 
         if(! $value) return json_encode($this->withUnchecked([]));
 
