@@ -7,7 +7,6 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Checkboxes extends Field
 {
-
     public $component = 'nova-checkboxes';
 
 
@@ -20,14 +19,12 @@ class Checkboxes extends Field
         ]);
     }
 
-
     public function saveAsString()
     {
         return $this->withMeta([
             'save_as_string' => true
         ]);
     }
-
 
     public function saveUncheckedValues()
     {
@@ -50,14 +47,23 @@ class Checkboxes extends Field
         ]);
     }
 
+    public function columns($columns = 1)
+    {
+        return $this->withMeta([
+            'columns' => $columns
+        ]);
+    }
+
     public function resolveAttribute($resource, $attribute = null)
     {
         $value = data_get($resource, $attribute);
 
-        if(! $value) return json_encode($this->withUnchecked([]));
+        if (! $value) {
+            return json_encode($this->withUnchecked([]));
+        }
 
-        if(is_array($value)){
-            if($this->arrayIsAssoc($value)){
+        if (is_array($value)) {
+            if ($this->arrayIsAssoc($value)) {
                 return json_encode($value);
             }
             return json_encode($this->withUnchecked($value));
@@ -67,20 +73,19 @@ class Checkboxes extends Field
     }
 
     protected function fillAttributeFromRequest(
-        NovaRequest $request, $requestAttribute, $model, $attribute
-    )
-    {
+        NovaRequest $request,
+        $requestAttribute,
+        $model,
+        $attribute
+    ) {
         if ($request->exists($requestAttribute)) {
-
             $data = json_decode($request[$requestAttribute]);
 
-            if($this->shouldSaveAsString()){
+            if ($this->shouldSaveAsString()) {
                 $value = implode(',', $this->onlyChecked($data));
-            }
-            elseif($this->shouldSaveUnchecked()){
+            } elseif ($this->shouldSaveUnchecked()) {
                 $value = $data;
-            }
-            else {
+            } else {
                 $value = $this->onlyChecked($data);
             }
 
@@ -107,7 +112,7 @@ class Checkboxes extends Field
     private function withUnchecked($data)
     {
         return collect($this->meta['options'])
-            ->mapWithKeys(function($option) use ($data){
+            ->mapWithKeys(function ($option) use ($data) {
                 $isChecked = in_array($option['value'], $data);
 
                 return [ $option['value'] => $isChecked ];
@@ -118,10 +123,10 @@ class Checkboxes extends Field
     private function onlyChecked($data)
     {
         return collect($data)
-            ->filter(function($isChecked){
+            ->filter(function ($isChecked) {
                 return $isChecked;
             })
-            ->map(function($value, $key){
+            ->map(function ($value, $key) {
                 return $key;
             })
             ->values()
@@ -130,7 +135,9 @@ class Checkboxes extends Field
 
     private function arrayIsAssoc(array $array)
     {
-        if ([] === $array) return false;
+        if ([] === $array) {
+            return false;
+        }
 
         return array_keys($array) !== range(0, count($array) - 1);
     }
