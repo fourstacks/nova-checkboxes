@@ -3,6 +3,7 @@
 namespace Fourstacks\NovaCheckboxes;
 
 use Laravel\Nova\Fields\Field;
+use Illuminate\Support\Collection;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Checkboxes extends Field
@@ -57,6 +58,10 @@ class Checkboxes extends Field
     public function resolveAttribute($resource, $attribute = null)
     {
         $value = data_get($resource, str_replace('->', '.', $attribute));
+
+        if ($value instanceof Collection) {
+            $value = $value->toArray();
+        }
 
         if (! $value) {
             return json_encode($this->withUnchecked([]));
