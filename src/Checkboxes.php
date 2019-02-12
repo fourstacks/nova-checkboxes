@@ -69,7 +69,7 @@ class Checkboxes extends Field
 
         if (is_array($value)) {
             if ($this->arrayIsAssoc($value)) {
-                return json_encode($this->withUnchecked($this->onlyChecked($value)));
+				$value = $this->onlyChecked($value);
             }
             return json_encode($this->withUnchecked($value));
         }
