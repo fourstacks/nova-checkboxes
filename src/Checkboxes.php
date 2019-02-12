@@ -98,7 +98,7 @@ class Checkboxes extends Field
         }
     }
 
-    private function shouldSaveAsString()
+    protected function shouldSaveAsString()
     {
         return (
             array_key_exists('save_as_string', $this->meta)
@@ -106,7 +106,7 @@ class Checkboxes extends Field
         );
     }
 
-    private function shouldSaveUnchecked()
+	protected function shouldSaveUnchecked()
     {
         return (
             array_key_exists('save_unchecked', $this->meta)
@@ -114,7 +114,7 @@ class Checkboxes extends Field
         );
     }
 
-    private function withUnchecked($data)
+	protected function withUnchecked($data)
     {
         return collect($this->meta['options'])
             ->mapWithKeys(function ($option) use ($data) {
@@ -125,7 +125,7 @@ class Checkboxes extends Field
             ->all();
     }
 
-    private function onlyChecked($data)
+	protected function onlyChecked($data)
     {
         return collect($data)
             ->filter(function ($isChecked) {
@@ -138,7 +138,7 @@ class Checkboxes extends Field
             ->all();
     }
 
-    private function arrayIsAssoc(array $array)
+	protected function arrayIsAssoc(array $array)
     {
         if ([] === $array) {
             return false;
