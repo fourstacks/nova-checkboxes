@@ -4,7 +4,6 @@ namespace Fourstacks\NovaCheckboxes\Tests\Unit;
 
 use Illuminate\Database\Eloquent\Model;
 use Fourstacks\NovaCheckboxes\Checkboxes;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Fourstacks\NovaCheckboxes\Tests\TestCase;
 
 class CheckboxesFieldTest extends TestCase
