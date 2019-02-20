@@ -61,7 +61,7 @@ class Checkboxes extends Field
 
         if ($value instanceof Collection) {
             $value = $value->toArray();
-        } else if (is_object($value)) {
+        } elseif (is_object($value)) {
             $value = (array) $value;
         } elseif (is_array($value)) {
             $value = $value;
