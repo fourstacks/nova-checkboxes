@@ -63,20 +63,19 @@ class Checkboxes extends Field
             $value = $value->toArray();
         } else if (is_object($value)) {
             $value = (array) $value;
+        } elseif (is_array($value)) {
+            $value = $value;
+        } elseif (strlen($value)) {
+            $value = explode(',', $value);
+        } elseif (! $value) {
+            $value = [];
+        } 
+
+        if ($this->arrayIsAssoc($value)) {
+			$value = $this->onlyChecked($value);
         }
 
-        if (! $value) {
-            return json_encode($this->withUnchecked([]));
-        }
-
-        if (is_array($value)) {
-            if ($this->arrayIsAssoc($value)) {
-				$value = $this->onlyChecked($value);
-            }
-            return json_encode($this->withUnchecked($value));
-        }
-
-        return json_encode($this->withUnchecked(explode(',', $value)));
+        return json_encode((object)$this->withUnchecked($value));
     }
 
     protected function fillAttributeFromRequest(
