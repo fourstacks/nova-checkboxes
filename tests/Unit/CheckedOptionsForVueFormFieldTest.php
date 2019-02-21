@@ -2,7 +2,6 @@
 
 namespace Fourstacks\NovaCheckboxes\Tests\Unit;
 
-use Illuminate\Database\Eloquent\Model;
 use Fourstacks\NovaCheckboxes\Checkboxes;
 use Fourstacks\NovaCheckboxes\Tests\TestCase;
 
