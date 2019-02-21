@@ -132,10 +132,7 @@ class Checkboxes extends Field
             ->filter(function ($isChecked) {
                 return $isChecked;
             })
-            ->map(function ($value, $key) {
-                return $key;
-            })
-            ->values()
+            ->keys()
             ->all();
     }
 
