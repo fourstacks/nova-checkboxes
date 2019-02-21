@@ -134,4 +134,12 @@ class CheckedOptionsForVueFormFieldTest extends TestCase
         $this->zeroIndexedField()->assertValue('{"0":true,"1":false,"2":false,"3":false}', '0');
     }
 
+    function test_when_previous_options_have_been_removed()
+    {
+        $this->assocField()->assertValue('{"archery":true,"painting":false,"running":false}', 'removed,archery');
+        $this->assocField()->assertValue('{"archery":true,"painting":false,"running":false}', ['removed' => true, 'archery' => true, 'running' => false]);
+        $this->numericKeysField()->assertValue('{"1":true,"2":true,"3":false}', '1,2,6,5');
+        $this->zeroIndexedField()->assertValue('{"0":true,"1":false,"2":false,"3":true}', '0,3,7');
+    }
+
 }
