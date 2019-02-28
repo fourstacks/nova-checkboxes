@@ -61,20 +61,21 @@ class Checkboxes extends Field
 
         if ($value instanceof Collection) {
             $value = $value->toArray();
+        } elseif (is_object($value)) {
+            $value = (array) $value;
+        } elseif (is_array($value)) {
+            $value = $value;
+        } elseif (strlen($value)) {
+            $value = explode(',', $value);
+        } elseif (! $value) {
+            $value = [];
+        } 
+
+        if ($this->arrayIsAssoc($value)) {
+            $value = $this->onlyChecked($value);
         }
 
-        if (! $value) {
-            return json_encode($this->withUnchecked([]));
-        }
-
-        if (is_array($value)) {
-            if ($this->arrayIsAssoc($value)) {
-				$value = $this->onlyChecked($value);
-            }
-            return json_encode($this->withUnchecked($value));
-        }
-
-        return json_encode($this->withUnchecked(explode(',', $value)));
+        return json_encode((object)$this->withUnchecked($value));
     }
 
     protected function fillAttributeFromRequest(
@@ -131,10 +132,7 @@ class Checkboxes extends Field
             ->filter(function ($isChecked) {
                 return $isChecked;
             })
-            ->map(function ($value, $key) {
-                return $key;
-            })
-            ->values()
+            ->keys()
             ->all();
     }
 
