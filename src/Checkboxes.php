@@ -2,6 +2,7 @@
 
 namespace Fourstacks\NovaCheckboxes;
 
+use Illuminate\Support\Arr;
 use Laravel\Nova\Fields\Field;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -71,7 +72,7 @@ class Checkboxes extends Field
             $value = [];
         } 
 
-        if ($this->arrayIsAssoc($value)) {
+        if (Arr::isAssoc($value)) {
             $value = $this->onlyChecked($value);
         }
 
@@ -134,14 +135,5 @@ class Checkboxes extends Field
             })
             ->keys()
             ->all();
-    }
-
-	protected function arrayIsAssoc(array $array)
-    {
-        if ([] === $array) {
-            return false;
-        }
-
-        return array_keys($array) !== range(0, count($array) - 1);
     }
 }
