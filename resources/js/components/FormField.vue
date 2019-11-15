@@ -2,7 +2,7 @@
     <default-field :field="field">
         <template slot="field">
             <ul class="list-reset">
-                <li class="flex items-center" v-for="option in field.options">
+                <li class="flex items-center mb-4" v-for="option in field.options">
                     <checkbox
                         class="py-2 mr-4"
                         @input="handleChange(option.value)"
