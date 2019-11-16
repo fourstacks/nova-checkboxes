@@ -1,3 +1,10 @@
+*NOTE*
+
+There is now a native field in Nova called Boolean Group that replicates this field when using the `saveUncheckedValues` option.  It is recommended that if you are using this package with that option enabled that you switch to the native Nova field as this package is only sporadically maintained.
+
+---
+
+
 # A checkbox field for Nova apps
 
 This package contains a Laravel Nova field to add an array of checkboxes to your Nova resource forms and display the input from these fields.
