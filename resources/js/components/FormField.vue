@@ -6,12 +6,10 @@
                     <checkbox
                         class="py-2 mr-4"
                         @input="handleChange(option.value)"
-                        :id="field.name"
                         :name="field.name"
                         :checked="options[option.value]"
                     ></checkbox>
                     <label
-                        :for="field.name"
                         v-text="option.label"
                         @click="handleChange(option.value)"
                     ></label>
