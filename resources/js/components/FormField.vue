@@ -1,8 +1,8 @@
 <template>
-    <default-field :field="field">
-        <template slot="field">
+    <DefaultField :field="field">
+        <template #field>
             <ul class="list-reset">
-                <li class="flex items-center mb-4" v-for="option in field.options">
+                <li class="flex items-center mb-4" v-for="(option, index) in field.options" :key="index">
                     <checkbox
                         class="py-2 mr-4"
                         @input="handleChange(option.value)"
@@ -16,11 +16,11 @@
                 </li>
             </ul>
 
-            <p v-if="hasError" class="my-2 text-danger">
+            <p v-if="hasError" class="my-2 text-red-500">
                 {{ firstError }}
             </p>
         </template>
-    </default-field>
+    </DefaultField>
 </template>
 
 <script>

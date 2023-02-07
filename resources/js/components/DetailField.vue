@@ -1,6 +1,7 @@
 <template>
-    <panel-item :field="field">
-        <div class="flex" slot="value">
+  <PanelItem :index="index" :field="field">
+    <template #value>
+      <div class="flex" slot="value">
             <ul :class="['list-reset', 'items-top', width]" v-for="options in chunkedOptions">
                 <component
                     v-for="option in options"
@@ -10,7 +11,8 @@
                 ></component>
             </ul>
         </div>
-    </panel-item>
+    </template>
+  </PanelItem>
 </template>
 
 <script>
@@ -19,7 +21,7 @@ import CheckboxDisplay from '../mixins/CheckboxDisplay';
 export default {
     mixins: [CheckboxDisplay],
 
-    props: ['resource', 'resourceName', 'resourceId', 'field'],
+  props: ['index', 'resource', 'resourceName', 'resourceId', 'field'],
 
     data() {
         return {
