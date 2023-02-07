@@ -1,3 +1,5 @@
+#This is a fork compatible with Nova 4
+
 *NOTE*
 
 There is now a native field in Nova called Boolean Group that replicates this field when using the `saveUncheckedValues` option.  It is recommended that if you are using this package with that option enabled that you switch to the native Nova field as this package is only sporadically maintained.
